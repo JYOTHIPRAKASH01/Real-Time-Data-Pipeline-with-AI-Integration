@@ -1,27 +1,17 @@
-from kafka import KafkaProducer
+from kafka import KafkaConsumer
 import json
-import time
-import random
 
 KAFKA_TOPIC = "real_time_data"
 KAFKA_BROKER = "localhost:9092"
 
-producer = KafkaProducer(
+consumer = KafkaConsumer(
+    KAFKA_TOPIC,
     bootstrap_servers=KAFKA_BROKER,
-    value_serializer=lambda v: json.dumps(v).encode("utf-8")
+    value_deserializer=lambda v: json.loads(v.decode("utf-8")),
+    auto_offset_reset="earliest"
 )
 
-def generate_data():
-    return {
-        "timestamp": time.time(),
-        "sensor_id": random.randint(1, 100),
-        "value": round(random.uniform(20.0, 100.0), 2)
-    }
-
 if __name__ == "__main__":
-    while True:
-        data = generate_data()
-        producer.send(KAFKA_TOPIC, data)
-        print(f"Produced: {data}")
-        time.sleep(2)
-
+    for message in consumer:
+        data = message.value
+        print(f"Consumed: {data}")
