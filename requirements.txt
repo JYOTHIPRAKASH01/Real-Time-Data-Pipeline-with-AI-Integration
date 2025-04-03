@@ -1,0 +1,10 @@
+kafka-python==2.0.2
+pyspark==3.1.2
+apache-airflow==2.1.2
+snowflake-connector-python==2.3.5
+langchain==0.0.103
+openai==0.10.3
+pandas==1.3.2
+numpy==1.21.2
+tableau-api-lib==0.6.1
+pyodbc==4.0.30
